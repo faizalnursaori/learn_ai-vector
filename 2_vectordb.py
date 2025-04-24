@@ -1,9 +1,9 @@
-from dotenv import load_dotenv
-from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
-
-import os
-import chromadb
 import json
+import os
+
+import chromadb
+from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
+from dotenv import load_dotenv
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
@@ -12,8 +12,7 @@ load_dotenv()
 client = chromadb.HttpClient("localhost", 8010)
 
 openai_ef = OpenAIEmbeddingFunction(
-    api_key=OPENAI_API_KEY,
-    model_name="text-embedding-3-small"
+    api_key=OPENAI_API_KEY, model_name="text-embedding-3-small"
 )
 
 fruit_strings = [
@@ -36,16 +35,14 @@ fruit_strings = [
     "The skin of an apple contains many nutrients.",
     "Valencia oranges are known for juicing.",
     "Bananas are technically berries, botanically speaking.",
-    "Granny Smith is a popular variety of green apple."
+    "Granny Smith is a popular variety of green apple.",
 ]
 
 collection = client.get_collection("fruits", embedding_function=openai_ef)
 # print(collection.count())
 
 result = collection.query(
-    query_texts=["Is banana yellow?"],
-    n_results=3,
-    include=["distances", "documents"]
+    query_texts=["Is banana yellow?"], n_results=3, include=["distances", "documents"]
 )
 
 print(json.dumps(result, indent=3, sort_keys=True))

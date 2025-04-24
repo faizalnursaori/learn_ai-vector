@@ -1,23 +1,20 @@
-from mistralai import Mistral
-from dotenv import load_dotenv
-
 import os
+
+from dotenv import load_dotenv
+from mistralai import Mistral
 
 load_dotenv()
 
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
-client = Mistral(
-    api_key=MISTRAL_API_KEY
-)
+client = Mistral(api_key=MISTRAL_API_KEY)
 
 ocr_response = client.ocr.process(
-    model= "mistral-ocr-latest",
+    model="mistral-ocr-latest",
     document={
         "type": "document_url",
-        "document_url": "https://www.hasbro.com/common/instruct/00009.pdf"
-    }
-
+        "document_url": "https://www.hasbro.com/common/instruct/00009.pdf",
+    },
 )
 
 content = ocr_response.model_dump()
